@@ -145,9 +145,14 @@ Filament est notre framework pour les panels d'administration. Installons-le :
 ```bash
 # Installation de Filament 4
 composer require filament/filament:^4.0
+
+# Publication des assets de Filament (fonts, CSS, etc.)
+php artisan filament:install
 ```
 
 > 💡 **Astuce** : Filament 4 nécessite PHP 8.2 minimum et Laravel 11+. Assurez-vous que votre environnement respecte ces prérequis.
+>
+> ⚠️ **Important** : La commande `php artisan filament:install` publie les assets nécessaires (fonts, styles, etc.). Sans cette étape, vous aurez des erreurs 404 sur les fichiers CSS.
 
 ### 🏢 Création des Deux Panels Filament
 
