@@ -1,3 +1,18 @@
+INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `image`, `is_active`, `sort_order`, `created_at`, `updated_at`) VALUES
+(1, 'Électronique', 'electronique', 'Produits électroniques', NULL, 1, 0, '2025-12-04 20:32:28', '2025-12-04 20:32:28'),
+(2, 'Plantes d’intérieur', 'plantes-interieur', 'Plantes adaptées aux espaces clos, nécessitant peu de lumière directe.', 'images/categories/plantes-interieur.jpg', 1, 1, '2025-12-04 18:56:07', '2025-12-04 18:56:07'),
+(3, 'Plantes d’extérieur', 'plantes-exterieur', 'Plantes conçues pour jardins, balcons et terrasses.', 'images/categories/plantes-exterieur.jpg', 1, 2, '2025-12-04 18:56:07', '2025-12-04 18:56:07'),
+(4, 'Plantes grasses', 'plantes-grasses', 'Succulentes faciles d’entretien, stockant l’eau dans leurs feuilles.', 'images/categories/plantes-grasses.jpg', 1, 3, '2025-12-04 18:56:07', '2025-12-04 18:56:07'),
+(5, 'Plantes aromatiques', 'plantes-aromatiques', 'Plantes utilisées en cuisine et pour leurs parfums.', 'images/categories/plantes-aromatiques.jpg', 1, 4, '2025-12-04 18:56:07', '2025-12-04 18:56:07'),
+(6, 'Plantes médicinales', 'plantes-medicinales', 'Plantes reconnues pour leurs vertus thérapeutiques.', 'images/categories/plantes-medicinales.jpg', 1, 5, '2025-12-04 18:56:07', '2025-12-04 18:56:07'),
+(7, 'Plantes tropicales', 'plantes-tropicales', 'Espèces provenant de climats tropicaux, souvent très décoratives.', 'images/categories/plantes-tropicales.jpg', 1, 6, '2025-12-04 18:56:07', '2025-12-04 18:56:07'),
+(8, 'Fleurs vivaces', 'fleurs-vivaces', 'Fleurs qui reviennent chaque année avec peu d’entretien.', 'images/categories/fleurs-vivaces.jpg', 1, 7, '2025-12-04 18:56:07', '2025-12-04 18:56:07'),
+(9, 'Fleurs annuelles', 'fleurs-annuelles', 'Fleurs à cycle de vie court, parfaites pour décorer un jardin saisonnier.', 'images/categories/fleurs-annuelles.jpg', 1, 8, '2025-12-04 18:56:07', '2025-12-04 18:56:07'),
+(10, 'Arbres et arbustes', 'arbres-arbustes', 'Catégorie regroupant arbres, buissons et haies décoratives.', 'images/categories/arbres-arbustes.jpg', 1, 9, '2025-12-04 18:56:07', '2025-12-04 18:56:07'),
+(11, 'Plantes grimpantes', 'plantes-grimpantes', 'Plantes utilisées pour recouvrir murs, pergolas ou clôtures.', 'images/categories/plantes-grimpantes.jpg', 1, 10, '2025-12-04 18:56:07', '2025-12-04 18:56:07');
+
+
+
 INSERT INTO products 
 (category_id, name, slug, short_description, description, price, sale_price, image, images, sku, stock_quantity, is_active, is_featured, sort_order, created_at, updated_at)
 VALUES
