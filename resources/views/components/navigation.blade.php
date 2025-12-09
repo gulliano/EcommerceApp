@@ -20,7 +20,7 @@
 
           <div class="space-y-6 border-t border-gray-200 px-4 py-6">
             <div class="flow-root">
-              <a href="#" class="-m-2 block p-2 font-medium text-gray-900">Accueil</a>
+              <a href="{{route('home')}}" class="-m-2 block p-2 font-medium text-gray-900">Accueil</a>
             </div>
             <div class="flow-root">
               <a href="#" class="-m-2 block p-2 font-medium text-gray-900">Produit</a>
@@ -31,12 +31,18 @@
           </div>
 
           <div class="space-y-6 border-t border-gray-200 px-4 py-6">
+            @guest
             <div class="flow-root">
-              <a href="#" class="-m-2 block p-2 font-medium text-gray-900">Connexion</a>
+              <a href="{{route('login')}}" class="-m-2 block p-2 font-medium text-gray-900">Connexion</a>
             </div>
+            @endguest
+           
+            @auth
             <div class="flow-root">
-              <a href="#" class="-m-2 block p-2 font-medium text-gray-900">Inscription</a>
+              <a href="{{route('profile.edit')}}" class="-m-2 block p-2 font-medium text-gray-900">Mon compte</a>
             </div>
+            @endauth
+           
           </div>
 
         
@@ -62,7 +68,7 @@
 
           <!-- Logo -->
           <div class="ml-4 flex lg:ml-0">
-            <a href="#">
+            <a href="{{route('home')}}">
               <span class="sr-only">Master Gugu</span>
               <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600" alt="" class="h-8 w-auto" />
             </a>
@@ -81,11 +87,11 @@
 
               <span aria-hidden="true" class="h-6 w-px bg-gray-200"></span>
                @guest
-                <a href="#" class="text-sm font-medium text-gray-700 hover:text-gray-800">Connexion</a>
+                <a href="{{route('login')}}" class="text-sm font-medium text-gray-700 hover:text-gray-800">Connexion</a>
                @endguest
            
                 @auth
-                <a href="#" class="text-sm font-medium text-gray-700 hover:text-gray-800">Mon compte</a> 
+                <a href="{{route('profile.edit')}}" class="text-sm font-medium text-gray-700 hover:text-gray-800">Mon compte</a> 
                 @endauth
               
             </div>
