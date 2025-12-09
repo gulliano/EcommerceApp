@@ -5,7 +5,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
-//use App\Http\Controllers\CartController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProfileController;
 
 // Page d'accueil
@@ -17,7 +17,7 @@ Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name
 
 // Catégories
 Route::get('/categories/{category:slug}', [ProductController::class, 'category'])->name('categories.show');
-/*
+
 // Panier (authentification requise)
 Route::middleware(['auth'])->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -26,11 +26,12 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/cart/remove/{cartItem}', [CartController::class, 'remove'])->name('cart.remove');
     Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 });
-*/
+
 
 
 /*
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CartController;
 
 Route::get('/', function () {
     return view('welcome');

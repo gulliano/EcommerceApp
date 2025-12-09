@@ -2,191 +2,122 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\Product;
-use App\Models\CartItem;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
 {
     use HasFactory;
 
-    /**
-     * Attributs assignables en masse
-     * 
-     * @var array<int, string>
-     */
     protected $fillable = [
         'user_id',
-        'session_id',
     ];
 
-    // ==========================================
-    // RELATIONS ELOQUENT
-    // ==========================================
-
     /**
-     * Un panier appartient à un utilisateur
-     * Relation Many-to-One
-     * 
-     * Usage : $cart->user
-     * 
-     * @return BelongsTo
+     * Relation : un panier appartient à un utilisateur
      */
-    public function user(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
     /**
-     * Un panier contient plusieurs articles
-     * Relation One-to-Many
-     * 
-     * Usage : $cart->items
-     * 
-     * @return HasMany
+     * Relation : un panier a plusieurs items
      */
-    public function items(): HasMany
+    public function items()
     {
         return $this->hasMany(CartItem::class);
     }
 
-    // ==========================================
-    // MÉTHODES HELPER
-    // ==========================================
-
     /**
-     * Calcule le montant total du panier
-     * 
-     * Usage : {{ $cart->total }}
-     * 
-     * @return float
+     * Nombre total d'articles dans le panier
      */
-    public function getTotalAttribute(): float
-    {
-        return $this->items->sum(function ($item) {
-            return $item->subtotal;
-        });
-    }
-
-    /**
-     * Obtient le nombre total d'articles dans le panier
-     * 
-     * Usage : {{ $cart->total_items }}
-     * 
-     * @return int
-     */
-    public function getTotalItemsAttribute(): int
+    public function getTotalItemsAttribute()
     {
         return $this->items->sum('quantity');
     }
 
     /**
-     * Vérifie si le panier est vide
-     * 
-     * Usage : @if($cart->isEmpty()) ... @endif
-     * 
-     * @return bool
+     * Sous-total (sans taxes ni livraison)
      */
-    public function isEmpty(): bool
+    public function getSubtotalAttribute()
+    {
+        return $this->items->sum(function ($item) {
+            return $item->quantity * $item->price;
+        });
+    }
+
+    /**
+     * Montant total avec taxes (TVA 8.5% pour la Martinique)
+     */
+    public function getTaxAttribute()
+    {
+        return $this->subtotal * 0.085;
+    }
+
+    /**
+     * Frais de livraison (gratuit si > 50€, sinon 5€)
+     */
+    public function getShippingAttribute()
+    {
+        return $this->subtotal >= 50 ? 0 : 5;
+    }
+
+    /**
+     * Total final (sous-total + taxes + livraison)
+     */
+    public function getTotalAttribute()
+    {
+        return $this->subtotal + $this->tax + $this->shipping;
+    }
+
+    /**
+     * Sous-total formaté
+     */
+    public function getFormattedSubtotalAttribute()
+    {
+        return number_format($this->subtotal, 2, ',', ' ') . ' €';
+    }
+
+    /**
+     * Taxes formatées
+     */
+    public function getFormattedTaxAttribute()
+    {
+        return number_format($this->tax, 2, ',', ' ') . ' €';
+    }
+
+    /**
+     * Livraison formatée
+     */
+    public function getFormattedShippingAttribute()
+    {
+        return $this->shipping === 0 
+            ? 'Gratuit' 
+            : number_format($this->shipping, 2, ',', ' ') . ' €';
+    }
+
+    /**
+     * Total formaté
+     */
+    public function getFormattedTotalAttribute()
+    {
+        return number_format($this->total, 2, ',', ' ') . ' €';
+    }
+
+    /**
+     * Vérifie si le panier est vide
+     */
+    public function isEmpty()
     {
         return $this->items->isEmpty();
     }
 
     /**
-     * Ajoute un produit au panier
-     * Si le produit existe déjà, augmente la quantité
-     * 
-     * Usage : $cart->addItem($product, $quantity)
-     * 
-     * @param Product $product
-     * @param int $quantity
-     * @return CartItem
-     */
-    public function addItem(Product $product, int $quantity = 1): CartItem
-    {
-        // Vérifie si le produit existe déjà dans le panier
-        $cartItem = $this->items()->where('product_id', $product->id)->first();
-
-        if ($cartItem) {
-            // Augmente la quantité
-            $cartItem->increment('quantity', $quantity);
-            $cartItem->refresh();
-        } else {
-            // Crée un nouvel article
-            $cartItem = $this->items()->create([
-                'product_id' => $product->id,
-                'quantity' => $quantity,
-                'price' => $product->effective_price,  // Prix au moment de l'ajout
-            ]);
-        }
-
-        return $cartItem;
-    }
-
-    /**
-     * Met à jour la quantité d'un article
-     * 
-     * Usage : $cart->updateItemQuantity($cartItemId, $newQuantity)
-     * 
-     * @param int $cartItemId
-     * @param int $quantity
-     * @return bool
-     */
-    public function updateItemQuantity(int $cartItemId, int $quantity): bool
-    {
-        $cartItem = $this->items()->find($cartItemId);
-
-        if (!$cartItem) {
-            return false;
-        }
-
-        if ($quantity <= 0) {
-            $cartItem->delete();
-        } else {
-            $cartItem->update(['quantity' => $quantity]);
-        }
-
-        return true;
-    }
-
-    /**
-     * Supprime un article du panier
-     * 
-     * Usage : $cart->removeItem($cartItemId)
-     * 
-     * @param int $cartItemId
-     * @return bool
-     */
-    public function removeItem(int $cartItemId): bool
-    {
-        return $this->items()->where('id', $cartItemId)->delete() > 0;
-    }
-
-    /**
      * Vide complètement le panier
-     * 
-     * Usage : $cart->clear()
-     * 
-     * @return void
      */
-    public function clear(): void
+    public function clear()
     {
         $this->items()->delete();
-    }
-
-    /**
-     * Formatte le total pour l'affichage
-     * 
-     * Usage : {{ $cart->formatted_total }}
-     * 
-     * @return string
-     */
-    public function getFormattedTotalAttribute(): string
-    {
-        return number_format($this->total, 2, ',', ' ') . ' €';
     }
 }

@@ -116,6 +116,16 @@ class User extends Authenticatable
     }
 
     /**
+ * Récupère ou crée le panier de l'utilisateur
+ */
+public function getOrCreateCart()
+{
+    if (!$this->cart) {
+        $this->cart()->create();
+    }
+    return $this->cart;
+}
+    /**
      * Un utilisateur peut avoir plusieurs commandes
      * Relation One-to-Many
      * 

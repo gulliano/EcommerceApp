@@ -2,21 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\Cart;
-use App\Models\Product;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class CartItem extends Model
 {
     use HasFactory;
 
-    /**
-     * Attributs assignables en masse
-     * 
-     * @var array<int, string>
-     */
     protected $fillable = [
         'cart_id',
         'product_id',
@@ -25,85 +17,62 @@ class CartItem extends Model
     ];
 
     /**
-     * Casting des attributs
-     * 
-     * @return array<string, string>
+     * Relation : un item appartient à un panier
      */
-    protected function casts(): array
-    {
-        return [
-            'quantity' => 'integer',
-            'price' => 'decimal:2',
-        ];
-    }
-
-    // ==========================================
-    // RELATIONS ELOQUENT
-    // ==========================================
-
-    /**
-     * Un item appartient à un panier
-     * Relation Many-to-One
-     * 
-     * Usage : $cartItem->cart
-     * 
-     * @return BelongsTo
-     */
-    public function cart(): BelongsTo
+    public function cart()
     {
         return $this->belongsTo(Cart::class);
     }
 
     /**
-     * Un item fait référence à un produit
-     * Relation Many-to-One
-     * 
-     * Usage : $cartItem->product
-     * 
-     * @return BelongsTo
+     * Relation : un item référence un produit
      */
-    public function product(): BelongsTo
+    public function product()
     {
         return $this->belongsTo(Product::class);
     }
 
-    // ==========================================
-    // ACCESSORS & HELPER METHODS
-    // ==========================================
-
     /**
-     * Calcule le sous-total de la ligne (prix × quantité)
-     * 
-     * Usage : {{ $cartItem->subtotal }}
-     * 
-     * @return float
+     * Sous-total de cet item (quantité × prix)
      */
-    public function getSubtotalAttribute(): float
+    public function getSubtotalAttribute()
     {
-        return $this->price * $this->quantity;
+        return $this->quantity * $this->price;
     }
 
     /**
-     * Formatte le prix pour l'affichage
-     * 
-     * Usage : {{ $cartItem->formatted_price }}
-     * 
-     * @return string
+     * Sous-total formaté
      */
-    public function getFormattedPriceAttribute(): string
+    public function getFormattedSubtotalAttribute()
+    {
+        return number_format($this->subtotal, 2, ',', ' ') . ' €';
+    }
+
+    /**
+     * Prix formaté
+     */
+    public function getFormattedPriceAttribute()
     {
         return number_format($this->price, 2, ',', ' ') . ' €';
     }
 
     /**
-     * Formatte le sous-total pour l'affichage
-     * 
-     * Usage : {{ $cartItem->formatted_subtotal }}
-     * 
-     * @return string
+     * Incrémente la quantité
      */
-    public function getFormattedSubtotalAttribute(): string
+    public function increment()
     {
-        return number_format($this->subtotal, 2, ',', ' ') . ' €';
+        $this->quantity++;
+        $this->save();
+    }
+
+    /**
+     * Décrémente la quantité (minimum 1)
+     */
+    public function decrement()
+    {
+        if ($this->quantity > 1) {
+            $this->quantity--;
+            $this->save();
+        }
     }
 }
