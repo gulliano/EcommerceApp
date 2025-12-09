@@ -18,6 +18,7 @@ class HomeController extends Controller
             ->sorted()
             ->withCount('activeProducts')
             ->get();
+       
 
         // Récupère les produits vedettes (max 8)
         $featuredProducts = Product::active()
