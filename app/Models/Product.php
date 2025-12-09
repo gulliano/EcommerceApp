@@ -103,6 +103,9 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+   
+    
+
     /**
      * Un produit peut être dans plusieurs paniers
      * 
