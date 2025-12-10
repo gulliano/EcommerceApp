@@ -36,7 +36,7 @@ class CartController extends Controller
 
         if ($cartItem) {
             // Incrémente la quantité si déjà présent
-            $cartItem->increment();
+            $cartItem->incrementQuantity();
             $message = 'Quantité mise à jour dans votre panier.';
         } else {
             // Ajoute un nouvel item

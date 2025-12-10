@@ -59,7 +59,7 @@ class CartItem extends Model
     /**
      * Incrémente la quantité
      */
-    public function increment()
+    public function incrementQuantity()
     {
         $this->quantity++;
         $this->save();
@@ -68,7 +68,7 @@ class CartItem extends Model
     /**
      * Décrémente la quantité (minimum 1)
      */
-    public function decrement()
+    public function decrementQuantity()
     {
         if ($this->quantity > 1) {
             $this->quantity--;
