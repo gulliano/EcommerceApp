@@ -361,7 +361,7 @@ class CartItem extends Model
     /**
      * Incrémente la quantité
      */
-    public function increment()
+    public function incrementQuantity()
     {
         $this->quantity++;
         $this->save();
@@ -370,7 +370,7 @@ class CartItem extends Model
     /**
      * Décrémente la quantité (minimum 1)
      */
-    public function decrement()
+    public function decrementQuantity()
     {
         if ($this->quantity > 1) {
             $this->quantity--;
@@ -382,7 +382,7 @@ class CartItem extends Model
 
 **💡 Points clés** :
 - Stocke le **prix au moment de l'ajout** (important pour l'historique)
-- Méthodes `increment()` et `decrement()` pour gérer les quantités
+- Méthodes `incrementQuantity()` et `decrementQuantity()` pour gérer les quantités
 - Calcul du sous-total par item
 
 ---
@@ -461,7 +461,7 @@ class CartController extends Controller
 
         if ($cartItem) {
             // Incrémente la quantité si déjà présent
-            $cartItem->increment();
+            $cartItem->incrementQuantity();
             $message = 'Quantité mise à jour dans votre panier.';
         } else {
             // Ajoute un nouvel item
