@@ -20,7 +20,7 @@ class HomeController extends Controller
             ->get();
        
 
-        // Récupère les produits vedettes (max 8)
+        // Récupère les produits vedettes (max 8) 
         $featuredProducts = Product::active()
             ->featured()
             ->with('category')
