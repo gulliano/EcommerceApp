@@ -6,7 +6,7 @@ use App\Models\Product;
 use App\Models\CartItem;
 use Illuminate\Http\Request;
 
-class CartController extends Controller
+class CartController extends Controller 
 {
     /**
      * Affiche le panier
@@ -25,10 +25,10 @@ class CartController extends Controller
     public function add(Product $product)
     {
         // Vérifie que le produit est disponible
-        if (!$product->in_stock) {
+        if (!$product->in_stock) { // ! si le produit n'est pas en stock retourne le message
             return back()->with('error', 'Ce produit n\'est plus en stock.');
         }
-
+        
         $cart = auth()->user()->getOrCreateCart();
 
         // Vérifie si le produit est déjà dans le panier
