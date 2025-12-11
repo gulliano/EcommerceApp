@@ -40,6 +40,8 @@ class CartItem extends Model
         return $this->quantity * $this->price;
     }
 
+
+
     /**
      * Sous-total formaté
      */

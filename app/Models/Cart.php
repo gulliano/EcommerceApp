@@ -22,7 +22,7 @@ class Cart extends Model
     }
 
     /**
-     * Relation : un panier a plusieurs items
+     * Relation : un panier a plusieurs items 
      */
     public function items()
     {
