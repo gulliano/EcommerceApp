@@ -23,7 +23,7 @@
               <a href="{{route('home')}}" class="-m-2 block p-2 font-medium text-gray-900">Accueil</a>
             </div>
             <div class="flow-root">
-              <a href="#" class="-m-2 block p-2 font-medium text-gray-900">Produit</a>
+              <a href="{{route('products.index')}}" class="-m-2 block p-2 font-medium text-gray-900">Produit</a>
             </div>
               <div class="flow-root">
               <a href="#" class="-m-2 block p-2 font-medium text-gray-900">Catégorie</a>
@@ -84,7 +84,7 @@
             <div class="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
             <a href="{{route('home')}}" class="text-sm font-medium text-gray-700 hover:text-gray-800">Accueil</a>
               <span aria-hidden="true" class="h-6 w-px bg-gray-200"></span>
-              <a href="#" class="text-sm font-medium text-gray-700 hover:text-gray-800">Produit</a>
+              <a href="{{route('products.index')}}" class="text-sm font-medium text-gray-700 hover:text-gray-800">Produit</a>
               <span aria-hidden="true" class="h-6 w-px bg-gray-200"></span>
               <a href="#" class="text-sm font-medium text-gray-700 hover:text-gray-800">Catégorie</a>
 

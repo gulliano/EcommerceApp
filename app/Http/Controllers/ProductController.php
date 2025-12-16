@@ -5,14 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
+    
     /**
      * Affiche la liste de tous les produits avec filtres
      */
     public function index(Request $request)
     {
+
+    
+
+
         // Construction de la requête de base
         $query = Product::query()
             ->active()
@@ -63,6 +69,7 @@ class ProductController extends Controller
             ->withCount('activeProducts')
             ->get();
 
+          
         return view('products.index', compact('products', 'categories'));
     }
 
