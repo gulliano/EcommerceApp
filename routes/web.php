@@ -3,10 +3,13 @@
 
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProductController;
+
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\ProfileController;
+
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ProductController;
+
 
 // Page d'accueil
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -27,20 +30,32 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 });
 
+// Commande (Checkout )
+Route::middleware(['auth'])->group(function () {
+
+     //Route::get('/checkout', [CheckoutController::class, 'teststripe'])->name('teststripe');
+     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+     Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+     Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
+     Route::get('/checkout/cancel', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
+
+});
 
 
 /*
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CartController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CheckoutController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+
+*/
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-*/
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

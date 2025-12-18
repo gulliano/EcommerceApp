@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Enums\UserRole;
 
+use Laravel\Cashier\Billable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,7 +15,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable , Billable;
 
     /**
      * Attributs assignables en masse
